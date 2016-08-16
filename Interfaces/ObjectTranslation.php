@@ -1,35 +1,38 @@
 <?php
 
-namespace ObjectTranslationBundle\Interface;
+namespace ObjectTranslationBundle\Interfaces;
 
+/*
+* interface for any translation model
+*/
 interface ObjectTranslation
 {
     /*
     * The object /translate to start with (Array / Object)
     */
-    public $fromObject;
+    //public $fromObject;
 
     /*
     * The object / structure to translate to (Array / Object)
     */
-    public $toObject;
+    //public $toObject;
 
     /*
     * The translation model for the to / from rules
     */
-    public $translationModel
+    //public $translationModel;
 
     /*
     * The mapping functions.  Anything more complicated than
     * a straight key transfer
     */
-    public $mappingFunctions;
+    //public $mappingFunctions;
 
     /*
     * The overwritting rules
     * sometimes we only want to set a value on under certain circumstances
     */
-    public $overwrittingRules;
+    //public $overwrittingRules;
 
     /*
     * funtion sets all the defaults and sets the to object to a specified type
@@ -41,14 +44,14 @@ interface ObjectTranslation
     * translating outward is a custom model / hash
     * return the data structure
     */
-    private function setToObject();
+    public function setToObject();
 
     /*
     * key valuerules of straight translation
     * key is the from object property / key
     * value is the to object property / key
     */
-    private function setTranslationModel();
+    public function setTranslationModel();
 
     /*
     * hash of translation functions to call
@@ -56,10 +59,12 @@ interface ObjectTranslation
     * value is the function to call
     * using the from Object
     */
-    private function setMappingFunctions();
+    public function setMappingFunctions();
 
-    //has key to overwrite, and an array of values good to overwrite.
-    //if it is always overwritten, take care of that in mapping functions.
-    //if it is never to be overwritten, have an empty array
-    private function setOverwrittingRules();
+    /*
+    * has key to overwrite, and an array of values good to overwrite.
+    * if it is always overwritten, take care of that in mapping functions.
+    * if it is never to be overwritten, have an empty array
+    */
+    public function setOverwrittingRules();
 }
