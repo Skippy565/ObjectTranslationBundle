@@ -1,10 +1,11 @@
 {
     "name": "Skippy565/object-translation-bundle",
+    "type": "symfony-bundle",
+    "description": "Symfony ObjectTranslationBundle",
     "license": "proprietary",
-    "type": "project",
     "autoload": {
         "psr-4": {
-            "Skippy565\\object-translation-bundle\\": ""
+            "Skippy565\\ObjectTranslationBundle\\": ""
         }
     },
     "require": {
@@ -14,6 +15,6 @@
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
         "symfony/phpunit-bridge": "~2.7",
-	"phpunit/phpunit": "4.8.*"
+	    "phpunit/phpunit": "4.8.*"
     }
 }
