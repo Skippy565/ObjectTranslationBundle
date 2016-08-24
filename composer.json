@@ -8,6 +8,9 @@
             "Skippy565\\ObjectTranslationBundle\\": ""
         }
     },
+    "autoload-dev": {
+        "psr-4": { "Skippy565\\ObjectTranslationBundle\\Tests\\": "" }
+    },
     "require": {
         "php": ">=5.3",
         "symfony/symfony": "^2.6"

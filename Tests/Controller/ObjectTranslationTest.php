@@ -1,11 +1,9 @@
 <?php
 
-namespace ObjectTranslationBundle\Tests\Controller;
+namespace Skippy565\ObjectTranslationBundle\Tests\Controller;
 
 use Skippy565\ObjectTranslationBundle\Interfaces\ObjectTranslation as ObjectTranslationInterface;
 use Skippy565\ObjectTranslationBundle\Controller\ObjectTranslation as ObjectTranslation;
-
-include_once(dirname(__FILE__).'/../../vendor/autoload.php');
 
 class ObjectTranslationTest
 {
