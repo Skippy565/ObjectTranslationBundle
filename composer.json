@@ -1,15 +1,11 @@
 {
-    "name": "chris/object-translation-bundle",
+    "name": "Skippy565/object-translation-bundle",
     "license": "proprietary",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "object-translation-bundle": ""
-        },
-        "classmap": [
-            "app/AppKernel.php",
-            "app/AppCache.php"
-        ]
+            "Skippy565\\object-translation-bundle\\": ""
+        }
     },
     "require": {
         "php": ">=5.3",
@@ -17,6 +13,7 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
-        "symfony/phpunit-bridge": "~2.7"
+        "symfony/phpunit-bridge": "~2.7",
+	"phpunit/phpunit": "4.8.*"
     }
 }

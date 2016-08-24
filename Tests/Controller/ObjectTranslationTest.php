@@ -2,10 +2,12 @@
 
 namespace ObjectTranslationBundle\Tests\Controller;
 
-use ObjectTranslationBundle\Interfaces\ObjectTranslation as ObjectTranslationInterface;
-use ObjectTranslationBundle\Controller\ObjectTranslation as ObjectTranslation;
+use Skippy565\ObjectTranslationBundle\Interfaces\ObjectTranslation as ObjectTranslationInterface;
+use Skippy565\ObjectTranslationBundle\Controller\ObjectTranslation as ObjectTranslation;
 
-class ObjectTranslationTest 
+include_once(dirname(__FILE__).'/../../vendor/autoload.php');
+
+class ObjectTranslationTest
 {
 	/*
 	* @covers translate
@@ -17,33 +19,5 @@ class ObjectTranslationTest
 			'lastName'	=>	'TestLast',
 			'email'		=>	'test@email.com'
 		];
-		/*$tempFromObject = new TestFromObject($params);
-
-		$tempTranslationObject = new TestTranslationObject($tempFromObject);
-		$result = ObjectTranslation::translate($tempTranslationObject);
-
-		var_dump($result);*/
-	}
-}
-
-
-
-class TestToObject
-{
-	protected $fullName;
-	protected $email;
-}
-
-class TestFromObject
-{
-	protected $firstName;
-	protected $lastName;
-	protected $email;
-
-	public function __construct($params = [])
-	{
-		foreach ($params as $key => $value) {
-			$this->$key = $value;
-		}
 	}
 }
