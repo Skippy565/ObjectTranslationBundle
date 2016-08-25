@@ -2,20 +2,31 @@
 
 namespace Skippy565\ObjectTranslationBundle\Tests\Controller;
 
-use Skippy565\ObjectTranslationBundle\Interfaces\ObjectTranslation as ObjectTranslationInterface;
-use Skippy565\ObjectTranslationBundle\Controller\ObjectTranslation as ObjectTranslation;
+use Skippy565\ObjectTranslationBundle\Controller\AbstractObjectTranslation;
 
-class ObjectTranslationTest
+/**
+ * Class ObjectTranslationTest
+ * @package Skippy565\ObjectTranslationBundle\Tests\Controller
+ */
+class ObjectTranslationTest extends \PHPUnit_Framework_TestCase
 {
-	/*
-	* @covers translate
-	*/
-	public function testTranslate()
-	{
-		$params = [
-			'firstName'	=>	'TestFirst',
-			'lastName'	=>	'TestLast',
-			'email'		=>	'test@email.com'
-		];
-	}
+    /**
+     * @covers AbstractObjectTranslation::translate
+     */
+    public function testTranslate()
+    {
+//        // instantiate from object
+//        $fromObject = new FromTestObject();
+//
+//        // instantiate to object
+//        $toObject = new ToTestObject();
+//
+//        // instantiate translation object
+//        $translationObject = new TranslationTestObject($fromObject, $toObject);
+//
+//        // translate
+//        $result = AbstractObjectTranslation::translate($translationObject);
+
+        $this->assertTrue(true);
+    }
 }
