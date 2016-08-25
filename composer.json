@@ -2,15 +2,14 @@
     "name": "Skippy565/object-translation-bundle",
     "type": "symfony-bundle",
     "description": "Symfony ObjectTranslationBundle",
-    "license": "proprietary",
-    "autoload": {
-        "psr-4": {
-            "Skippy565\\ObjectTranslationBundle\\": ""
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christopher Pate",
+            "homepage": "https://github.com/Skippy565",
+            "role": "Owner"
         }
-    },
-    "autoload-dev": {
-        "psr-4": { "Skippy565\\ObjectTranslationBundle\\Tests\\": "" }
-    },
+    ],
     "require": {
         "php": ">=5.3",
         "symfony/symfony": "^2.6"
@@ -19,5 +18,11 @@
         "sensio/generator-bundle": "~3.0",
         "symfony/phpunit-bridge": "~2.7",
 	    "phpunit/phpunit": "4.8.*"
+    },
+    "autoload": {
+        "psr-4": { "Skippy565\\ObjectTranslationBundle\\": "" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Skippy565\\ObjectTranslationBundle\\Tests": "Tests/" }
     }
 }
