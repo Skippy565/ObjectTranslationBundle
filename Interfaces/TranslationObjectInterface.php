@@ -8,40 +8,12 @@ namespace Skippy565\ObjectTranslationBundle\Interfaces;
  */
 interface TranslationObjectInterface
 {
-    // TODO: interfaces cannot include member variables (maybe move to abstract model that implements interface?)
-    /*
-    * The object /translate to start with (Array / Object)
-    */
-    //public $fromObject;
-
-    /*
-    * The object / structure to translate to (Array / Object)
-    */
-    //public $toObject;
-
-    /*
-    * The translation model for the to / from rules
-    */
-    //public $translationModel;
-
-    /*
-    * The mapping functions.  Anything more complicated than
-    * a straight key transfer
-    */
-    //public $mappingFunctions;
-
-    /*
-    * The overwriting rules
-    * sometimes we only want to set a value on under certain circumstances
-    */
-    //public $overwritingRules;
-
     /**
      * function sets all the defaults and sets the to object to a specified type
      * if the to object isn't sent into the constructor
      *
-     * @param object $fromObject
-     * @param object $toObject
+     * @param object|array $fromObject
+     * @param object|array $toObject
      */
     public function __construct($fromObject, $toObject = null);
 

@@ -2,41 +2,15 @@
 
 namespace Skippy565\ObjectTranslationBundle\Tests\Controller;
 
+use Skippy565\ObjectTranslationBundle\Model\AbstractTranslationObject;
 use Skippy565\ObjectTranslationBundle\Interfaces\TranslationObjectInterface;
 
 /**
  * Class TranslationTestObject
  * @package Skippy565\ObjectTranslationBundle\Tests\Controller
  */
-class TranslationTestObject implements TranslationObjectInterface
+class TranslationTestObject extends AbstractTranslationObject implements TranslationObjectInterface
 {
-    /*
-    * The object /translate to start with (Array / Object)
-    */
-    public $fromObject;
-
-    /*
-    * The object / structure to translate to (Array / Object)
-    */
-    public $toObject;
-
-    /*
-    * The translation model for the to / from rules
-    */
-    public $translationModel;
-
-    /*
-    * The mapping functions.  Anything more complicated than
-    * a straight key transfer
-    */
-    public $mappingFunctions;
-
-    /*
-    * The overwriting rules
-    * sometimes we only want to set a value on under certain circumstances
-    */
-    public $overwritingRules;
-
     /**
      * function sets all the defaults and sets the to object to a specified type
      * if the to object isn't sent into the constructor
@@ -111,6 +85,6 @@ class TranslationTestObject implements TranslationObjectInterface
      */
     public function mapName(FromTestObject $fromObject)
     {
-        return $fromObject->firstName . ' ' . $fromObject->lastName;
+        return $fromObject->__get('firstName') . ' ' . $fromObject->__get('lastName');
     }
 }
