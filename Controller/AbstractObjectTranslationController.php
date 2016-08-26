@@ -2,17 +2,21 @@
 
 namespace Skippy565\ObjectTranslationBundle\Controller;
 
+use Skippy565\ObjectTranslationBundle\Interfaces\TranslationObjectInterface;
+
 /**
- * Class AbstractObjectTranslation
- * @package ObjectTranslationBundle\Controller
+ * Class AbstractObjectTranslationController
+ * @package Skippy565\ObjectTranslationBundle\Controller
  */
-abstract class AbstractObjectTranslation
+abstract class AbstractObjectTranslationController
 {
+    private static $translationProblem = [];
+
     /**
-     * @param object $translationObject
+     * @param TranslationObjectInterface $translationObject
      * @return array
      */
-    public static function translate($translationObject)
+    public static function translate(TranslationObjectInterface $translationObject)
     {
         if (!$translationObject->fromObject) {
             $retArray = self::buildResponse('false', 'No object to translate from', '');
@@ -26,21 +30,25 @@ abstract class AbstractObjectTranslation
             return $retArray;
         }
 
-        $translationProblemArray = [];
-
         foreach ($translationObject->translationModel as $key => $value) {
-            //check against values
-            if (!self::checkOverwrite($translationObject, $value)) { //retain the value if set not to overwrite
-                self::setValue($translationObject->toObject, $translationObject->toObject, $value, $value); // TODO: ($value, $value) is this the correct argument here? Method signature defines $key, $value
-            } else { //overwrite the value
-                self::setValue($translationObject->fromObject, $translationObject->toObject, $key, $value);
+            try {
+                //check against values
+                if (!self::checkOverwrite($translationObject, $value)) { //retain the value if set not to overwrite
+                    self::setValue($translationObject->toObject, $translationObject->toObject, $value, $value);
+                } else { //overwrite the value
+                    self::setValue($translationObject->fromObject, $translationObject->toObject, $key, $value);
+                }
+            } catch (\Exception $e) {
+                $retArray = self::buildResponse('false', $e->getMessage(), '');
+
+                return $retArray;
             }
         }
 
-        if (count($translationProblemArray) == 0) {
+        if (count(self::$translationProblem) == 0) {
             $retArray = self::postProcessMapping($translationObject);
         } else {
-            $retArray = self::buildResponse('false', 'Problem with translation', $translationProblemArray);
+            $retArray = self::buildResponse('false', 'Problem with translation', self::$translationProblem);
         }
 
         return $retArray;
@@ -52,42 +60,37 @@ abstract class AbstractObjectTranslation
      * @param string       $key
      * @param mixed        $value
      * @return array
-     * @throws \LogicException
+     * @throws \Exception
      */
     public static function setValue(&$fromObject, &$toObject, $key, $value)
     {
-        $translationProblemArray = [];
         if (is_array($toObject) && is_array($fromObject)) {
             try {
                 $toObject[$value] = $fromObject[$key];
             } catch (\Exception $e) {
-                $translationProblemArray[count($translationProblemArray)] = 'Problem Translating ' . $key . ' to ' . $value . ' of ' . $e->getMessage();
+                self::$translationProblem[count(self::$translationProblem)] = 'Problem Translating ' . $key . ' to ' . $value . ' of ' . $e->getMessage();
             }
         } elseif (is_object($toObject) && is_array($fromObject)) {
             try {
                 $toObject->__set($value, $fromObject[$key]);
             } catch (\Exception $e) {
-                $translationProblemArray[count($translationProblemArray)] = 'Problem Translating ' . $key . ' to ' . $value . ' of ' . $e->getMessage();
+                self::$translationProblem[count(self::$translationProblem)] = 'Problem Translating ' . $key . ' to ' . $value . ' of ' . $e->getMessage();
             }
         } elseif (is_array($toObject) && is_object($fromObject)) {
             try {
                 $toObject[$value] = $fromObject->__get($key);
             } catch (\Exception $e) {
-                $translationProblemArray[count($translationProblemArray)] = 'Problem Translating ' . $key . ' to ' . $value . ' of ' . $e->getMessage();
+                self::$translationProblem[count(self::$translationProblem)] = 'Problem Translating ' . $key . ' to ' . $value . ' of ' . $e->getMessage();
             }
         } elseif (is_object($toObject) && is_object($fromObject)) {
             try {
                 $toObject->__set($value, $fromObject->__get($key));
             } catch (\Exception $e) {
-                $translationProblemArray[count($translationProblemArray)] = 'Problem Translating ' . $key . ' to ' . $value . ' of ' . $e->getMessage();
+                self::$translationProblem[count(self::$translationProblem)] = 'Problem Translating ' . $key . ' to ' . $value . ' of ' . $e->getMessage();
             }
         } else {
-            $retArray = self::buildResponse('false', 'Unsupported translation types', '');
-
-            return $retArray;
+            throw new \Exception('Unsupported translation types');
         }
-
-        throw new \LogicException('How did I get here?');
     }
 
     public static function postProcessMapping($translationObject)
@@ -98,8 +101,6 @@ abstract class AbstractObjectTranslation
             return $retArray;
         }
 
-        $translationProblemArray = [];
-
         foreach ($translationObject->mappingFunctions as $key => $value) {
             //check against values
             if (!self::checkOverwrite($translationObject, $key)) {
@@ -108,27 +109,33 @@ abstract class AbstractObjectTranslation
 
             if (is_array($translationObject->toObject) && is_array($translationObject->fromObject)) {
                 try {
-                    $translationObject->toObject[$key] = $translationObject->$value($translationObject->fromObject);
+                    $translationObject->toObject[$key] = $translationObject->$value($translationObject->$value($translationObject->fromObject));
                 } catch (\Exception $e) {
-                    $translationProblemArray[count($translationProblemArray)] = 'ToObject' . $key . '=' . $value . '(ToObject' . $key . ') of ' . $e->getMessage();
+                    self::$translationProblem[count(self::$translationProblem)] = 'ToObject' . $key . '=' . $value . '(ToObject' . $key . ') of ' . $e->getMessage();
                 }
             } elseif (is_object($translationObject->toObject) && is_array($translationObject->fromObject)) {
                 try {
                     $translationObject->toObject->__set($key, $translationObject->$value($translationObject->fromObject));
                 } catch (\Exception $e) {
-                    $translationProblemArray[count($translationProblemArray)] = 'ToObject->__set(' . $key . ', ' . $value . '(FromObject)) of ' . $e->getMessage();
+                    self::$translationProblem[count(self::$translationProblem)] = 'ToObject->__set(' . $key . ', ' . $value . '(FromObject)) of ' . $e->getMessage();
                 }
             } elseif (is_array($translationObject->toObject) && is_object($translationObject->fromObject)) {
                 try {
                     $translationObject->toObject[$key] = $translationObject->$value($translationObject->fromObject);
                 } catch (\Exception $e) {
-                    $translationProblemArray[count($translationProblemArray)] = 'ToObject[' . $key . '] = ' . $value . '(FromObject) of ' . $e->getMessage();
+                    self::$translationProblem[count(self::$translationProblem)] = 'ToObject[' . $key . '] = ' . $value . '(FromObject) of ' . $e->getMessage();
+                }
+            } elseif (is_object($translationObject->toObject) && is_object($translationObject->fromObject)) {
+                try {
+                    $translationObject->toObject->__set($key, $translationObject->$value($translationObject->fromObject));
+                } catch (\Exception $e) {
+                    self::$translationProblem[count(self::$translationProblem)] = 'ToObject->__set(' . $key . ', ' . $value . '(FromObject) of ' . $e->getMessage();
                 }
             }
         }
 
-        if (count($translationProblemArray) > 0) {
-            $retArray = self::buildResponse('false', 'Problem mapping', $translationProblemArray);
+        if (count(self::$translationProblem) > 0) {
+            $retArray = self::buildResponse('false', 'Problem mapping', self::$translationProblem);
         } else {
             $retArray = self::buildResponse('true', 'Mapped', $translationObject->toObject);
         }
