@@ -8,11 +8,11 @@ namespace Skippy565\ObjectTranslationBundle\Tests\Controller;
  */
 class FromTestObject
 {
-    private $firstName;
+    public $firstName;
 
-    private $lastName;
+    public $lastName;
 
-    private $email;
+    public $email;
 
     /**
      * TestObject constructor.

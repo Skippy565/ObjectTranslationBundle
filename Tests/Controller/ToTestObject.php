@@ -14,6 +14,16 @@ class ToTestObject
 
     public $email;
 
+    public $noOverride;
+
+    public $willOverride;
+
+    public function __construct()
+    {
+        $this->noOverride = 'Keep';
+        $this->willOverride = 'Change';
+    }
+
     /**
      * @param string $name
      * @param mixed  $value
