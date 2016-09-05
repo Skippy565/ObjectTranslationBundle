@@ -92,8 +92,10 @@ class TranslationTestObject extends AbstractTranslationObject implements Transla
     {
         if (is_object($fromObject)) {
             return $fromObject->__get('firstName') . ' ' . $fromObject->__get('lastName');
-        } else {
+        } elseif (is_array($fromObject)) {
             return $fromObject['firstName'] . ' ' . $fromObject['lastName'];
+        } else {
+            echo "neither object or array: " . var_dump($fromObject);
         }
     }
 }

@@ -109,7 +109,7 @@ abstract class AbstractObjectTranslationController
 
             if (is_array($translationObject->toObject) && is_array($translationObject->fromObject)) {
                 try {
-                    $translationObject->toObject[$key] = $translationObject->$value($translationObject->$value($translationObject->fromObject));
+                    $translationObject->toObject[$key] = $translationObject->$value($translationObject->fromObject);
                 } catch (\Exception $e) {
                     self::$translationProblem[count(self::$translationProblem)] = 'ToObject' . $key . '=' . $value . '(ToObject' . $key . ') of ' . $e->getMessage();
                 }
