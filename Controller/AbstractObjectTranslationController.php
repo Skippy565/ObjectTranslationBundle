@@ -59,7 +59,6 @@ abstract class AbstractObjectTranslationController
      * @param object|array $toObject
      * @param string       $key
      * @param mixed        $value
-     * @return array
      * @throws \Exception
      */
     public static function setValue(&$fromObject, &$toObject, $key, $value)
@@ -93,6 +92,10 @@ abstract class AbstractObjectTranslationController
         }
     }
 
+    /**
+     * @param mixed $translationObject
+     * @return array
+     */
     public static function postProcessMapping($translationObject)
     {
         if (count($translationObject->mappingFunctions) == 0) {
