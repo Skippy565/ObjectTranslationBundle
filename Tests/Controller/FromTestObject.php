@@ -8,11 +8,15 @@ namespace Skippy565\ObjectTranslationBundle\Tests\Controller;
  */
 class FromTestObject
 {
-    private $firstName;
+    public $firstName;
 
-    private $lastName;
+    public $lastName;
 
-    private $email;
+    public $email;
+
+    public $email1;
+
+    public $email2;
 
     /**
      * TestObject constructor.
@@ -21,7 +25,7 @@ class FromTestObject
     {
         $this->firstName = 'Homer';
         $this->lastName = 'Simpson';
-        $this->email = 'homer.simpson@fox.com';
+        $this->email = $this->email1 = $this->email2 = 'homer.simpson@fox.com';
     }
 
     /**

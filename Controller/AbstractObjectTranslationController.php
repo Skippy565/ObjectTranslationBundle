@@ -59,7 +59,6 @@ abstract class AbstractObjectTranslationController
      * @param object|array $toObject
      * @param string       $key
      * @param mixed        $value
-     * @return array
      * @throws \Exception
      */
     public static function setValue(&$fromObject, &$toObject, $key, $value)
@@ -68,31 +67,35 @@ abstract class AbstractObjectTranslationController
             try {
                 $toObject[$value] = $fromObject[$key];
             } catch (\Exception $e) {
-                self::$translationProblem[count(self::$translationProblem)] = 'Problem Translating ' . $key . ' to ' . $value . ' of ' . $e->getMessage();
+                self::$translationProblem[count(self::$translationProblem)] = 'Problem Translating '.$key.' to '.$value.' of '.$e->getMessage();
             }
         } elseif (is_object($toObject) && is_array($fromObject)) {
             try {
                 $toObject->__set($value, $fromObject[$key]);
             } catch (\Exception $e) {
-                self::$translationProblem[count(self::$translationProblem)] = 'Problem Translating ' . $key . ' to ' . $value . ' of ' . $e->getMessage();
+                self::$translationProblem[count(self::$translationProblem)] = 'Problem Translating '.$key.' to '.$value.' of '.$e->getMessage();
             }
         } elseif (is_array($toObject) && is_object($fromObject)) {
             try {
                 $toObject[$value] = $fromObject->__get($key);
             } catch (\Exception $e) {
-                self::$translationProblem[count(self::$translationProblem)] = 'Problem Translating ' . $key . ' to ' . $value . ' of ' . $e->getMessage();
+                self::$translationProblem[count(self::$translationProblem)] = 'Problem Translating '.$key.' to '.$value.' of '.$e->getMessage();
             }
         } elseif (is_object($toObject) && is_object($fromObject)) {
             try {
                 $toObject->__set($value, $fromObject->__get($key));
             } catch (\Exception $e) {
-                self::$translationProblem[count(self::$translationProblem)] = 'Problem Translating ' . $key . ' to ' . $value . ' of ' . $e->getMessage();
+                self::$translationProblem[count(self::$translationProblem)] = 'Problem Translating '.$key.' to '.$value.' of '.$e->getMessage();
             }
         } else {
             throw new \Exception('Unsupported translation types');
         }
     }
 
+    /**
+     * @param mixed $translationObject
+     * @return array
+     */
     public static function postProcessMapping($translationObject)
     {
         if (count($translationObject->mappingFunctions) == 0) {
@@ -109,27 +112,27 @@ abstract class AbstractObjectTranslationController
 
             if (is_array($translationObject->toObject) && is_array($translationObject->fromObject)) {
                 try {
-                    $translationObject->toObject[$key] = $translationObject->$value($translationObject->$value($translationObject->fromObject));
+                    $translationObject->toObject[$key] = $translationObject->$value($translationObject->fromObject);
                 } catch (\Exception $e) {
-                    self::$translationProblem[count(self::$translationProblem)] = 'ToObject' . $key . '=' . $value . '(ToObject' . $key . ') of ' . $e->getMessage();
+                    self::$translationProblem[count(self::$translationProblem)] = 'ToObject'.$key.'='.$value.'(ToObject'.$key.') of '.$e->getMessage();
                 }
             } elseif (is_object($translationObject->toObject) && is_array($translationObject->fromObject)) {
                 try {
                     $translationObject->toObject->__set($key, $translationObject->$value($translationObject->fromObject));
                 } catch (\Exception $e) {
-                    self::$translationProblem[count(self::$translationProblem)] = 'ToObject->__set(' . $key . ', ' . $value . '(FromObject)) of ' . $e->getMessage();
+                    self::$translationProblem[count(self::$translationProblem)] = 'ToObject->__set('.$key.', '.$value.'(FromObject)) of '.$e->getMessage();
                 }
             } elseif (is_array($translationObject->toObject) && is_object($translationObject->fromObject)) {
                 try {
                     $translationObject->toObject[$key] = $translationObject->$value($translationObject->fromObject);
                 } catch (\Exception $e) {
-                    self::$translationProblem[count(self::$translationProblem)] = 'ToObject[' . $key . '] = ' . $value . '(FromObject) of ' . $e->getMessage();
+                    self::$translationProblem[count(self::$translationProblem)] = 'ToObject['.$key.'] = '.$value.'(FromObject) of '.$e->getMessage();
                 }
             } elseif (is_object($translationObject->toObject) && is_object($translationObject->fromObject)) {
                 try {
                     $translationObject->toObject->__set($key, $translationObject->$value($translationObject->fromObject));
                 } catch (\Exception $e) {
-                    self::$translationProblem[count(self::$translationProblem)] = 'ToObject->__set(' . $key . ', ' . $value . '(FromObject) of ' . $e->getMessage();
+                    self::$translationProblem[count(self::$translationProblem)] = 'ToObject->__set('.$key.', '.$value.'(FromObject) of '.$e->getMessage();
                 }
             }
         }
@@ -143,24 +146,30 @@ abstract class AbstractObjectTranslationController
         return $retArray;
     }
 
-    //checks overwrite flag + also checks against overwrite values
+    /**
+     * Checks overwrite flag + also checks against overwrite values
+     *
+     * @param mixed $translationObject
+     * @param mixed $key
+     * @return bool
+     */
     public static function checkOverwrite($translationObject, $key)
     {
         //case where always overwrite the value
-        if (!isset($translationObject->overwrittingRules[$key])) {
+        if (!isset($translationObject->overwritingRules[$key])) {
             return true;
         }
 
         if (is_array($translationObject->toObject)) {
-            if (isset($translationObject->overwrittingRules[$key]) && !in_array($translationObject->toObject[$key], $translationObject->overwrittingRules[$key])) {
+            if (isset($translationObject->overwritingRules[$key]) && !in_array($translationObject->toObject[$key], $translationObject->overwritingRules[$key])) {
                 return false;
             } else {
                 return true;
             }
         } elseif (is_object($translationObject->toObject)) {
-            if (isset($translationObject->overwrittingRules[$key])
-                && property_exists($translationObject, $key)
-                && !in_array($translationObject->toObject->__get($key), $translationObject->overwrittingRules[$key])
+            if (isset($translationObject->overwritingRules[$key])
+                && property_exists($translationObject->toObject, $key)
+                && !in_array($translationObject->toObject->__get($key), $translationObject->overwritingRules[$key])
             ) {
                 return false;
             } else {

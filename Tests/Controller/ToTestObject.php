@@ -8,11 +8,20 @@ namespace Skippy565\ObjectTranslationBundle\Tests\Controller;
  */
 class ToTestObject
 {
-    public $firstName;
+    public $fullName;
 
-    public $lastName;
+    public $noOverride;
 
-    public $email;
+    public $willOverride;
+
+    /**
+     * ToTestObject constructor.
+     */
+    public function __construct()
+    {
+        $this->noOverride = 'Keep';
+        $this->willOverride = 'Change';
+    }
 
     /**
      * @param string $name
