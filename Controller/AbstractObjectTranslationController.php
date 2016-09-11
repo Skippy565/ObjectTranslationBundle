@@ -88,9 +88,9 @@ abstract class AbstractObjectTranslationController
             } catch (\Exception $e) {
                 self::$translationProblem[count(self::$translationProblem)] = 'Problem Translating '.$key.' to '.$value.' of '.$e->getMessage();
             }
+        } else {
+            throw new \Exception('Unsupported translation types');
         }
-
-        throw new \Exception('Unsupported translation types');
     }
 
     public static function postProcessMapping($translationObject)
@@ -153,20 +153,20 @@ abstract class AbstractObjectTranslationController
     public static function checkOverwrite($translationObject, $key)
     {
         //case where always overwrite the value
-        if (!isset($translationObject->overwrittingRules[$key])) {
+        if (!isset($translationObject->overwritingRules[$key])) {
             return true;
         }
 
         if (is_array($translationObject->toObject)) {
-            if (isset($translationObject->overwrittingRules[$key]) && !in_array($translationObject->toObject[$key], $translationObject->overwrittingRules[$key])) {
+            if (isset($translationObject->overwritingRules[$key]) && !in_array($translationObject->toObject[$key], $translationObject->overwritingRules[$key])) {
                 return false;
             } else {
                 return true;
             }
         } elseif (is_object($translationObject->toObject)) {
-            if (isset($translationObject->overwrittingRules[$key])
-                && property_exists($translationObject, $key)
-                && !in_array($translationObject->toObject->__get($key), $translationObject->overwrittingRules[$key])
+            if (isset($translationObject->overwritingRules[$key])
+                && property_exists($translationObject->toObject, $key)
+                && !in_array($translationObject->toObject->__get($key), $translationObject->overwritingRules[$key])
             ) {
                 return false;
             } else {

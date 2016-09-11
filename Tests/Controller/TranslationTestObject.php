@@ -49,8 +49,8 @@ class TranslationTestObject extends AbstractTranslationObject implements Transla
     {
         $this->translationModel = [
             'email' => 'email',
-            'email' => 'noOverride',
-            'email' => 'willOverride',
+            'email1' => 'noOverride',
+            'email2' => 'willOverride',
         ];
     }
 
@@ -76,7 +76,7 @@ class TranslationTestObject extends AbstractTranslationObject implements Transla
      */
     public function setOverwritingRules()
     {
-        return [
+        $this->overwritingRules = [
             'noOverride'    =>  [null],
             'willOverride'  =>  ['Change'],
         ];

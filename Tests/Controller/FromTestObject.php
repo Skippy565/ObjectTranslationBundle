@@ -14,6 +14,10 @@ class FromTestObject
 
     public $email;
 
+    public $email1;
+
+    public $email2;
+
     /**
      * TestObject constructor.
      */
@@ -21,7 +25,7 @@ class FromTestObject
     {
         $this->firstName = 'Homer';
         $this->lastName = 'Simpson';
-        $this->email = 'homer.simpson@fox.com';
+        $this->email = $this->email1 = $this->email2 = 'homer.simpson@fox.com';
     }
 
     /**
