@@ -8,6 +8,11 @@
             "name": "Christopher Pate",
             "homepage": "https://github.com/Skippy565",
             "role": "Owner"
+        },
+        {
+            "name": "Dragan Sefo",
+            "homepage": "http://dragonwired.com",
+            "role": "Developer"
         }
     ],
     "require": {
