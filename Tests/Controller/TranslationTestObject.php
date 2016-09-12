@@ -49,8 +49,8 @@ class TranslationTestObject extends AbstractTranslationObject implements Transla
     {
         $this->translationModel = [
             'email' => 'email',
-            'email' => 'noOverride',
-            'email' => 'willOverride'
+            'email1' => 'noOverride',
+            'email2' => 'willOverride',
         ];
     }
 
@@ -76,26 +76,27 @@ class TranslationTestObject extends AbstractTranslationObject implements Transla
      */
     public function setOverwritingRules()
     {
-        return [
+        $this->overwritingRules = [
             'noOverride'    =>  [null],
-            'willOverride'  =>  ['Change']
+            'willOverride'  =>  ['Change'],
         ];
     }
 
     /**
-     * function takes in from object, and returns what value should be set for the key
+     * Function takes in from object, and returns what value should be set for the key
      *
-     * @param $fromObject
+     * @param mixed $fromObject
      * @return string
+     * @throws \Exception
      */
     public function mapName($fromObject)
     {
         if (is_object($fromObject)) {
-            return $fromObject->__get('firstName') . ' ' . $fromObject->__get('lastName');
+            return $fromObject->__get('firstName').' '.$fromObject->__get('lastName');
         } elseif (is_array($fromObject)) {
-            return $fromObject['firstName'] . ' ' . $fromObject['lastName'];
-        } else {
-            echo "neither object or array: " . var_dump($fromObject);
+            return $fromObject['firstName'].' '.$fromObject['lastName'];
         }
+
+        throw new \Exception("Neither object or array: ".var_dump($fromObject));
     }
 }

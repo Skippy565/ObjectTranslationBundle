@@ -14,6 +14,9 @@ class ToTestObject
 
     public $willOverride;
 
+    /**
+     * ToTestObject constructor.
+     */
     public function __construct()
     {
         $this->noOverride = 'Keep';
