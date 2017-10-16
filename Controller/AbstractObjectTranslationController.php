@@ -18,6 +18,9 @@ abstract class AbstractObjectTranslationController
      */
     public static function translate(TranslationObjectInterface $translationObject)
     {
+        //reset translation problems before continuing
+        self::$translationProblem = [];
+        
         if (!$translationObject->fromObject) {
             $retArray = self::buildResponse('false', 'No object to translate from', '');
 
