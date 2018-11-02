@@ -12,26 +12,6 @@ use Skippy565\ObjectTranslationBundle\Interfaces\TranslationObjectInterface;
 class TranslationTestObject extends AbstractTranslationObject implements TranslationObjectInterface
 {
     /**
-     * function sets all the defaults and sets the to object to a specified type
-     * if the to object isn't sent into the constructor
-     *
-     * @param FromTestObject $fromObject
-     * @param ToTestObject   $toObject
-     */
-    public function __construct($fromObject, $toObject = null)
-    {
-        $this->fromObject = $fromObject;
-        if (!$toObject) {
-            $this->setToObject();
-        } else {
-            $this->toObject = $toObject;
-        }
-        $this->setTranslationModel();
-        $this->setMappingFunctions();
-        $this->setOverwritingRules();
-    }
-
-    /**
      * translating outward is a custom model / hash
      * return the data structure
      */

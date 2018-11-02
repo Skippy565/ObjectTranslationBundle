@@ -9,15 +9,6 @@ namespace Skippy565\ObjectTranslationBundle\Interfaces;
 interface TranslationObjectInterface
 {
     /**
-     * function sets all the defaults and sets the to object to a specified type
-     * if the to object isn't sent into the constructor
-     *
-     * @param object|array $fromObject
-     * @param object|array $toObject
-     */
-    public function __construct($fromObject, $toObject = null);
-
-    /**
      * translating outward is a custom model / hash
      * return the data structure
      */
