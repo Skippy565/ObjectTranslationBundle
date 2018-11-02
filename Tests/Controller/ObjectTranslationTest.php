@@ -234,4 +234,64 @@ class ObjectTranslationTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($fromObject['firstName'].' '.$fromObject['lastName'], $data->$property);
         }
     }
+
+    /**
+     * @covers clone functionality
+     */
+    public function testTranslateArrayToObjectWithClone() {
+        $fromObject1 = json_decode(json_encode(new FromTestObject()), true);
+        $fromObject2 = json_decode(json_encode(new FromTestObject()), true);
+        $fromObject2['email'] = "test@email.com";
+        $fromObject3 = json_decode(json_encode(new FromTestObject()), true);
+        $fromObject3['email'] = "another@email.com";
+
+        $fromArray = [$fromObject1, $fromObject2, $fromObject3];
+
+        // instantiate to object
+        $toObject = new ToTestObject();
+
+        $resultArray = [];
+
+        for ($i=0; $i<count($fromArray);$i++) {
+            // instantiate translation object
+            $translationObject = new TranslationTestObject($fromArray[$i], $toObject, true);
+
+            // translate
+            array_push($resultArray, AbstractObjectTranslationController::translate($translationObject));
+        }
+
+        $this->assertTrue($resultArray[0]['data']->email != $resultArray[1]['data']->email);
+        $this->assertTrue($resultArray[0]['data']->email != $resultArray[2]['data']->email);
+        $this->assertTrue($resultArray[1]['data']->email != $resultArray[2]['data']->email);
+    }
+
+    /**
+     * @covers clone functionality
+     */
+    public function testTranslateArrayToArrayWithClone() {
+        $fromObject1 = json_decode(json_encode(new FromTestObject()), true);
+        $fromObject2 = json_decode(json_encode(new FromTestObject()), true);
+        $fromObject2['email'] = "test@email.com";
+        $fromObject3 = json_decode(json_encode(new FromTestObject()), true);
+        $fromObject3['email'] = "another@email.com";
+
+        $fromArray = [$fromObject1, $fromObject2, $fromObject3];
+
+        // instantiate to object
+        $toObject = json_decode(json_encode(new ToTestObject()), true);
+
+        $resultArray = [];
+
+        for ($i=0; $i<count($fromArray);$i++) {
+            // instantiate translation object
+            $translationObject = new TranslationTestObject($fromArray[$i], $toObject, true);
+
+            // translate
+            array_push($resultArray, AbstractObjectTranslationController::translate($translationObject));
+        }
+
+        $this->assertTrue($resultArray[0]['data']['email'] != $resultArray[1]['data']['email']);
+        $this->assertTrue($resultArray[0]['data']['email'] != $resultArray[2]['data']['email']);
+        $this->assertTrue($resultArray[1]['data']['email'] != $resultArray[2]['data']['email']);
+    }
 }
