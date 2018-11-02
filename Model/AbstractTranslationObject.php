@@ -21,17 +21,32 @@ abstract class AbstractTranslationObject
     /*
      * The translation model for the to / from rules
      */
-    public $translationModel;
+    public $translationModel = [];
 
     /*
      * The mapping functions. Anything more complicated than
      * a straight key transfer
      */
-    public $mappingFunctions;
+    public $mappingFunctions = [];
 
     /*
      * The overwriting rules
      * sometimes we only want to set a value on under certain circumstances
      */
-    public $overwritingRules;
+    public $overwritingRules = [];
+
+    public function addToTranslationModel($key, $value) {
+        $this->translationModel[$key] = $value;
+        return $this;
+    }
+
+    public function addToMappingFunctions($key, $value) {
+        $this->mappingFunctions[$key] = $value;
+        return $this;
+    }
+
+    public function addToOverwritingRules($key, $value) {
+        $this->overwritingRules[$key] = $value;
+        return $this;
+    }
 }
